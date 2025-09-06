@@ -1,3 +1,5 @@
+
+```matlab
 clear; clc; close all;
 lb_phy = [70 0 70 0 70 0 70 0 70 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0];
 ub_phy = [140 2*pi 140 2*pi 140 2*pi 140 2*pi 140 2*pi 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40];
@@ -16,14 +18,68 @@ opts = struct(...
     'plot',    true);
 
 [xBest, fBest, deHist] = DE(objFun, lb, ub, opts);
-%%
+```
+
+```matlabTextOutput
+Gen    50: best f = 7.20
+Gen   100: best f = 9.40
+Gen   150: best f = 10.10
+Gen   200: best f = 11.30
+Gen   250: best f = 11.50
+Gen   300: best f = 12.10
+```
+
+![figure_0.png](testde_media/figure_0.png)
+
+```matlab
 x_phy_best = (xBest + 1)/2 .* (ub_phy - lb_phy) + lb_phy;
 fprintf('最优物理量：');
+```
+
+```matlabTextOutput
+最优物理量：
+```
+
+```matlab
 disp(x_phy_best);
+```
+
+```matlabTextOutput
+  列 1 至 11
+
+  124.1085    0.1100   93.6280    4.3999  100.6682    1.4881   97.4016    6.2832  134.6947    3.9623    0.0010
+
+  列 12 至 22
+
+   40.0000    1.0189    0.0497    1.1319    0.0075    8.3398   39.1924   31.2241    6.8989   39.2008   10.3262
+
+  列 23 至 33
+
+   27.1507   24.8560   26.2956    0.7726   39.0531   18.3794    4.6579    2.0758   21.2999   30.8776    2.2876
+
+  列 34 至 40
+
+   19.5930   40.0000   25.3615   15.7393   24.2697   27.5889   24.6821
+```
+
+```matlab
 [t1, t2, t3] = cal_shelf(x_phy_best);
 fprintf('最大遮蔽时长：%.3f, %.3f, %.3f s\n', t1, t2, t3);
+```
+
+```matlabTextOutput
+最大遮蔽时长：10.600, 0.000, 1.500 s
+```
+
+```matlab
 fprintf("最大总时长%.2f", (t1+t2+t3));
-%%
+```
+
+```matlabTextOutput
+最大总时长12.10
+```
+
+```matlab
 function [xBest, fBest, hist] = DE(fun, lb, ub, opts)
 % 参数
 MaxGen  = opts.MaxGen;
@@ -133,3 +189,4 @@ if doplot
     grid on;
 end
 end
+```
